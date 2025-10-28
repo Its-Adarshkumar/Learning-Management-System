@@ -16,6 +16,7 @@ const bodyParser = require("body-parser");
 const userModel = require("./models/user");
 const adminModel = require("./models/admin");
 const videoModel = require("./models/video");
+const feedbackModel = require("./models/feedback");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -123,6 +124,18 @@ app.post("/logout", (req, res) => {
   console.log("logging out");
   req.session.destroy(() => res.redirect("/"));
 });
+
+const addFeedback = async (course,userId, rating, content, comments) => {
+  const feedback = new feedbackModel({
+    course,
+    userId,
+    rating,
+    content,
+    comments,
+  });
+  await feedback.save();
+  console.log("Feedback added successfully!");
+};
 
 // ===== ROUTES =====
 
@@ -463,7 +476,7 @@ app.get("/certificates", async (req, res) => {
 //   }
 // });
 
-app.get("/show_certificate", async (req, res) => {
+app.get("/show_certificate",  async (req, res) => {
   try {
     const { course, name } = req.query;
 
@@ -659,7 +672,47 @@ app.get("/profile", async (req, res) => {
 //   }
 // });
 
+app.get("/feedback", async (req, res) => {
+  const course = req.query.course;
+  if (!course) return res.status(400).send("Course name missing");
 
+  const user = req.session.user; // assuming user logged in
+  if (!user) return res.redirect("/login");
+
+  res.render("feedback", {
+    courseName: course,
+    userName: user.name,
+  });
+});
+
+app.post("/feedback/submit", async (req, res) => {
+  try {
+    const { courseName, rating, contentFeedback, additionalComments } = req.body;
+    const user = req.session.user;
+
+    if (!user) return res.redirect("/login");
+
+    // Save feedback
+    const feedback = new Feedback({
+      course: courseName,
+      userId: user._id,
+      rating,
+      content: contentFeedback,
+      comments: additionalComments || "",
+    });
+
+    await feedback.save();
+    console.log("✅ Feedback saved!");
+
+    // Redirect to certificate download
+    return res.redirect(
+      `/download_certificate_image?course=${encodeURIComponent(courseName)}`
+    );
+  } catch (err) {
+    console.error("❌ Error saving feedback:", err);
+    res.status(500).send("Failed to save feedback");
+  }
+});
 
 app.get("/download_certificate_image", async (req, res) => {
   try {
