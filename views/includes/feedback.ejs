@@ -38,14 +38,41 @@
 
           <!-- Course Content Feedback -->
           <div class="mb-3">
-            <label class="form-label">Course Content</label>
-            <textarea class="form-control" name="contentFeedback" rows="3" placeholder="What did you think about the course material?" required></textarea>
+            <label class="form-label">How would you rate the course content?</label>
+            <select class="form-select" name="contentFeedback" required>
+              <option value="">Select option</option>
+              <option value="Very Comprehensive">Very Comprehensive</option>
+              <option value="Well Structured">Well Structured</option>
+              <option value="Average">Average</option>
+              <option value="Needs Improvement">Needs Improvement</option>
+              <option value="Not Useful">Not Useful</option>
+            </select>
+          </div>
+
+          <!-- Instructor Performance -->
+          <div class="mb-3">
+            <label class="form-label">How was the course delivery & explanation?</label>
+            <select class="form-select" name="instructorFeedback" required>
+              <option value="">Select option</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Very Good">Very Good</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
+              <option value="Poor">Poor</option>
+            </select>
           </div>
 
           <!-- Additional Comments -->
           <div class="mb-3">
-            <label class="form-label">Additional Comments</label>
-            <textarea class="form-control" name="additionalComments" rows="2" placeholder="Any suggestions or feedback?"></textarea>
+            <label class="form-label">Would you recommend this course to others?</label>
+            <select class="form-select" name="recommend" required>
+              <option value="">Select option</option>
+              <option value="Definitely Yes">Definitely Yes</option>
+              <option value="Probably Yes">Probably Yes</option>
+              <option value="Not Sure">Not Sure</option>
+              <option value="Probably Not">Probably Not</option>
+              <option value="Definitely Not">Definitely Not</option>
+            </select>
           </div>
 
           <!-- Submit Button -->
@@ -104,9 +131,8 @@
     p {
       font-size: 0.9rem;
     }
-    .form-control, .form-select, textarea.form-control {
+    .form-control, .form-select {
       font-size: 0.9rem;
     }
   }
 </style>
-
