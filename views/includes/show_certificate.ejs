@@ -10,25 +10,24 @@
 
   /* === MAIN CONTENT === */
   .main-content {
-    margin-left: 260px; /* keep sidebar space */
+    margin-left: 260px;
     padding: 3rem 2rem;
     min-height: 100vh;
     background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
     transition: all 0.3s ease;
   }
 
-  /* === BUTTONS (TOP-LEFT, OUTSIDE SIDEBAR) === */
+  /* === TOP BUTTONS === */
   .top-buttons {
     position: fixed;
-    top: 20px;
-    left: 280px; /* adjusted so it appears outside sidebar */
+    top: 10px;
+    left: 280px; /* aligned after sidebar */
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    gap: 15px;
     z-index: 9999;
   }
 
@@ -64,7 +63,7 @@
     text-align: center;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    margin-top: 6rem;
+    margin-top: 6rem; /* leave space for buttons */
   }
 
   .certificate-header {
@@ -111,6 +110,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 3rem;
+    flex-wrap: wrap;
   }
 
   .signature-block {
@@ -138,28 +138,91 @@
   @media (max-width: 992px) {
     .main-content {
       margin-left: 0 !important;
-      padding: 2rem 1rem;
+      padding: 5rem 1rem 3rem;
     }
+
+    /* Buttons below toggle on mobile */
     .top-buttons {
-      left: 20px;
-      top: 15px;
+      position: static;
+      margin: 1rem 0 1.5rem 60px; /* shift right from toggle */
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .action-btn {
+      flex: 1 1 auto;
+      min-width: 140px;
+      max-width: 180px;
+      font-size: 0.9rem;
+      padding: 0.45rem 0.8rem;
+    }
+
+    .certificate-container {
+      padding: 2rem 1rem;
+      border-width: 4px;
+      width: 95%;
+      margin-top: 2rem;
+    }
+
+    .certificate-header {
+      font-size: 1.6rem;
+    }
+
+    .certificate-subtitle {
+      font-size: 1rem;
+    }
+
+    .cert-name {
+      font-size: 1.4rem;
+    }
+
+    .cert-text,
+    .cert-course {
+      font-size: 1rem;
+    }
+
+    .certificate-footer {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .seal {
+      font-size: 2.3rem;
     }
   }
 
-  /* === HIDE BUTTONS FOR DOWNLOAD/PRINT === */
+  /* === PRINT / DOWNLOAD === */
   @media print {
     .top-buttons {
       display: none !important;
     }
   }
-
-  body.download-mode .top-buttons {
-    display: none !important;
+  /* === RESPONSIVE FIX for Footer Alignment === */
+@media (max-width: 992px) {
+  .certificate-footer {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: center;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
   }
+
+  .signature-block {
+    text-align: center !important;
+  }
+
+  .seal {
+    font-size: 2.3rem;
+    margin: 0 1rem;
+  }
+}
+
 </style>
 
-<div class="main-content">
-  <!-- Top Left Buttons -->
+<div class="main-content main-wrapper">
+  <!-- Buttons (Fixed on Desktop, Safe on Mobile) -->
   <div class="top-buttons">
     <a
       href="/download_certificate_image?course=<%= courseName %>"

@@ -21,11 +21,10 @@ const MongoStore = require("connect-mongo");
 const app = express();
 const cookieParser = require("cookie-parser");
 const { URLSearchParams } = require("url");
+const PORT = process.env.PORT || 5000;
 const { isAuthenticated } = require("./middleware.js");
 const flash = require("flash");
-const PORT = process.env.PORT || 5000;
 const puppeteer = require("puppeteer");
-
 dotenv.config();
 
 // ===== Cloudinary Configuration =====
@@ -227,6 +226,10 @@ app.get("/courses", async (req, res) => {
     console.error(err);
     res.status(500).send("Server Error");
   }
+});
+
+app.get("/about_us", (req, res) => {
+  res.render("includes/about_us", { page: "about_us" });
 });
 
 app.get("/help", (req, res) => {
@@ -587,6 +590,7 @@ app.post("/deleteuser/:id", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 app.get("/profile", async (req, res) => {
   try {
