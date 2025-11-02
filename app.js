@@ -183,9 +183,22 @@ app.post("/video/delete/:id", async (req, res) => {
   }
 });
 
-app.get("/video_upload", (req, res) => {
-  res.render("includes/video_upload", { page: "video_upload" });
+app.get("/video_upload", async (req, res) => {
+  try {
+    // Fetch all unique course names from DB
+    const courses = await videoModel.distinct("course");
+
+    // Render page with dynamic courses
+    res.render("includes/video_upload", { 
+      page: "video_upload",
+      courses // pass this to EJS
+    });
+  } catch (err) {
+    console.error("Error loading courses:", err);
+    res.status(500).send("Failed to load upload page");
+  }
 });
+
 
 app.get("/courses", async (req, res) => {
   try {
