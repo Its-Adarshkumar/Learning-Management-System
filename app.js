@@ -758,7 +758,8 @@ app.get("/download_certificate_image", async (req, res) => {
 await page.evaluate(() => document.body.classList.add("download-mode"));
 
     // Puppeteer opens certificate page directly
-    const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}`;
+    // const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}`;
+        const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}&batch=${encodeURIComponent(userBatch)}&enrollmentId=${encodeURIComponent(userEnroll)}`;
 
     console.log("🎓 Generating certificate for:", targetUrl);
 
@@ -782,6 +783,8 @@ await page.evaluate(() => document.body.classList.add("download-mode"));
     res.status(500).send("Failed to generate certificate image");
   }
 });
+
+
 
 
 
