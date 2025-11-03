@@ -17,19 +17,31 @@
         </div>
 
         <div class="col-md-6">
-          <label for="courseSelect">🎓 Course</label>
-          <select id="courseSelect" name="course" class="form-select">
-            <option value="" disabled selected>Select a course</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Data Structures">Data Structures</option>
-            <option value="Database Systems">Database Systems</option>
-            <option value="Computer Networks">Computer Networks</option>
-            <option value="new">➕ New Course</option>
-          </select>
+  <label for="courseSelect">🎓 Course</label>
+  <select id="courseSelect" name="course" class="form-select" required>
+    <option value="" disabled selected>Select a course</option>
 
-          <!-- Hidden input (only shown when user selects "New Course") -->
-          <input type="text" id="newCourseInput" name="newCourse" class="form-control mt-2 d-none" placeholder="Enter new course name" />
-        </div>
+    <% if (courses && courses.length > 0) { %>
+      <% courses.forEach(course => { %>
+        <option value="<%= course %>"><%= course %></option>
+      <% }) %>
+    <% } else { %>
+      <option disabled>No courses available yet</option>
+    <% } %>
+
+    <option value="new">➕ New Course</option>
+  </select>
+
+  <!-- Hidden input (only shown when "New Course" selected) -->
+  <input 
+    type="text" 
+    id="newCourseInput" 
+    name="newCourse" 
+    class="form-control mt-2 d-none" 
+    placeholder="Enter new course name" 
+  />
+</div>
+
 
         <div class="form-divider"></div>
 

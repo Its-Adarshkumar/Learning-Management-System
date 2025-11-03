@@ -235,33 +235,90 @@
     </a>
   </div>
 
-  <!-- Certificate -->
+    <!-- Certificate -->
   <div class="certificate-container" id="certificate">
-    <div class="certificate-header">Certificate of Completion</div>
-    <div class="certificate-subtitle">This is to proudly certify that</div>
-
-    <div class="certificate-body">
-      <div class="cert-name"><%= user.name %></div>
-      <div class="cert-text">has successfully completed the course</div>
-      <div class="cert-course"><%= courseName %></div>
+    <!-- Top Logos -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <img src="/pictures/lms-logo.jpg" alt="GTB4CEC Logo" style="width: 80px; height: 80px; object-fit: contain;" />
+      <div style="text-align: center;">
+        <i class="fa-solid fa-award" style="font-size: 70px; color: #003366;"></i>
+      </div>
+      <img src="/pictures/college-logo.jpg" alt="GTB4CEC Logo" style="width: 80px; height: 80px; object-fit: contain;" />
     </div>
 
-    <div class="certificate-footer">
-      <div class="signature-block">
-        <div class="signature-line"></div>
-        <div class="signature-name">Prof. Pardeep Singh</div>
-        <div class="text-secondary">Course Instructor</div>
+    <!-- Header Text -->
+    <div style="margin-top: 1rem; text-align: center;">
+      <h2 style="font-size: 1.4rem; margin-bottom: 0.3rem; color: #000; text-transform: uppercase; font-weight: 600;">
+        Guru Tegh Bahadur 4<sup>th</sup> Centenary Engineering College
+      </h2>
+      <p style="margin: 0; font-size: 1rem; color: #333;">
+        G-8 Area, Rajouri Garden, New Delhi - 110064
+      </p>
+      <h3 style="margin-top: 1rem; font-size: 1.2rem; text-decoration: underline;">
+        Department of Computer Science and Engineering
+      </h3>
+    </div>
+
+    <!-- Certificate Title -->
+    <h2 style="margin-top: 2rem; text-decoration: underline; font-weight: 600; font-size: 1.3rem;">
+      Certificate
+    </h2>
+
+    <!-- Certificate Body -->
+    <div style="text-align: left; font-size: 1.05rem; line-height: 1.8; margin-top: 1rem; color: #222;">
+      <p>
+        It is certified that
+        <strong><%= user.name %></strong>,
+        student of Guru Tegh Bahadur 4<sup>th</sup> Centenary Engineering College,
+        enrollment no. <strong><%= user.enrollmentId%></strong> of
+        <strong><%=   user.batch%></strong> batch has successfully
+        participated and completed our
+        <strong><%= courseName %></strong> course.
+      </p>
+    </div>
+
+    <!-- Signatures -->
+    <div
+      class="certificate-footer"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+        text-align: center;
+      "
+    >
+      <div class="signature-block" style="text-align: left;">
+        <img
+          src="/pictures/hod-sign.jpg"
+          alt="Signature"
+          style="width: 120px; height: auto; margin-bottom: 0.3rem;"
+        />
+        <div class="signature-name" style="font-weight: 600;">Pardeep Singh</div>
+        <div style="font-size: 0.9rem;">HOD (CSE)</div>
       </div>
 
-      <div class="seal">
-        <i class="fa-solid fa-award"></i>
+      <div class="signature-block" style="text-align: center;">
+        <img
+          src="/pictures/course-conveyor.jpg"
+          alt="course-conveyor"
+          style="width: 120px; height: auto; margin-bottom: 0.3rem;"
+        />
+        <div class="signature-name" style="font-weight: 600;">Dr. Apurva Vashishth</div>
+        <div style="font-size: 0.9rem;">Course Conveyor</div>
       </div>
 
-      <div class="signature-block" style="text-align: right">
-        <div class="signature-line"></div>
-        <div class="signature-name">GTB4CEC LMS</div>
-        <div class="text-secondary">Official Seal</div>
+      <div class="signature-block" style="text-align: right;">
+        <img
+          src="/pictures/director-sign.jpg"
+          alt="Signature"
+          style="width: 120px; height: auto; margin-bottom: 0.3rem;"
+        />
+        <div class="signature-name" style="font-weight: 600;">Gurmeet Singh Bali</div>
+        <div style="font-size: 0.9rem;">(Director)</div>
       </div>
     </div>
   </div>
+
 </div>
