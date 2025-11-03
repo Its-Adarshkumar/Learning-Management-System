@@ -494,11 +494,13 @@ app.get("/certificates", async (req, res) => {
 
 app.get("/show_certificate",  async (req, res) => {
   try {
-    const { course, name } = req.query;
+    const { course} = req.query;
+    const user = await userModel
+      .findOne({ enrollmentId: req.session.user.id })
 
     // Fallbacks
     const courseName = course || "Course";
-    const user = { name: name || req.session.user?.name || "Student" };
+    //const user = { name: name || req.session.user?.name || "Student" };
 
     // Render the certificate page
     res.render("includes/show_certificate", { page:"show_certificate",user, courseName });
