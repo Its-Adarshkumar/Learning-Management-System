@@ -492,20 +492,53 @@ app.get("/certificates", async (req, res) => {
 //   }
 // });
 
-app.get("/show_certificate",  async (req, res) => {
+// app.get("/show_certificate",  async (req, res) => {
+//   try {
+//     const { course} = req.query;
+//     const user = await userModel
+//       .findOne({ enrollmentId: req.session.user.id })
+
+//     // Fallbacks
+//     const courseName = course || "Course";
+//     //const user = { name: name || req.session.user?.name || "Student" };
+
+//     // Render the certificate page
+//     res.render("includes/show_certificate", { page:"show_certificate",user, courseName });
+//   } catch (err) {
+//     console.error("Error rendering certificate:", err);
+//     res.status(500).send("Failed to render certificate page");
+//   }
+// });
+
+app.get("/show_certificate", async (req, res) => {
   try {
-    const { course} = req.query;
-    const user = await userModel
-      .findOne({ enrollmentId: req.session.user.id })
+    const { course, name, batch, enrollmentId } = req.query;
 
-    // Fallbacks
+    let user = null;
+
+    // Try to get user from session if available
+    if (req.session?.user?.id) {
+      user = await userModel.findOne({ enrollmentId: req.session.user.id });
+    }
+
+    // If no session user found, use query-based fallback
+    if (!user) {
+      user = {
+        name: name || "Student",
+        batch: batch || "Batch",
+        enrollmentId: enrollmentId || "Enrollment",
+      };
+    }
+
     const courseName = course || "Course";
-    //const user = { name: name || req.session.user?.name || "Student" };
 
-    // Render the certificate page
-    res.render("includes/show_certificate", { page:"show_certificate",user, courseName });
+    res.render("includes/show_certificate", {
+      page: "show_certificate",
+      user,
+      courseName,
+    });
   } catch (err) {
-    console.error("Error rendering certificate:", err);
+    console.error("❌ Error rendering certificate:", err);
     res.status(500).send("Failed to render certificate page");
   }
 });
