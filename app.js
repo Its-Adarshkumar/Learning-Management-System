@@ -733,13 +733,66 @@ app.post("/feedback/submit", async (req, res) => {
   }
 });
 
+// app.get("/download_certificate_image", async (req, res) => {
+//   try {
+//     const course = req.query.course;
+//     if (!course) return res.status(400).send("Course name missing");
+
+//     // Use session name, fallback to query name or default
+//     const userName = req.session.user?.name || req.query.name || "Student";
+
+//     const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+
+//     const browser = await puppeteer.launch({
+//       headless: true,
+//       args: [
+//         "--no-sandbox",
+//         "--disable-setuid-sandbox",
+//         "--disable-dev-shm-usage",
+//         "--single-process",
+//         "--no-zygote",
+//       ],
+//     });
+
+//     const page = await browser.newPage();
+// await page.evaluate(() => document.body.classList.add("download-mode"));
+
+//     // Puppeteer opens certificate page directly
+//     // const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}`;
+//         const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}&batch=${encodeURIComponent(userBatch)}&enrollmentId=${encodeURIComponent(userEnroll)}`;
+
+//     console.log("🎓 Generating certificate for:", targetUrl);
+
+//     await page.goto(targetUrl, { waitUntil: "networkidle0" });
+//     await new Promise((r) => setTimeout(r, 1000)); // wait for fonts/images
+
+//     const cert = await page.$(".certificate-container");
+//     if (!cert) throw new Error("Certificate container not found on page.");
+
+//     const imageBuffer = await cert.screenshot({ type: "png", omitBackground: false });
+//     await browser.close();
+
+//     res.setHeader(
+//       "Content-Disposition",
+//       `attachment; filename="${userName}-${course}-Certificate.png"`
+//     );
+//     res.contentType("image/png");
+//     res.send(imageBuffer);
+//   } catch (err) {
+//     console.error("❌ Error generating certificate image:", err);
+//     res.status(500).send("Failed to generate certificate image");
+//   }
+// });
+
 app.get("/download_certificate_image", async (req, res) => {
   try {
     const course = req.query.course;
     if (!course) return res.status(400).send("Course name missing");
 
-    // Use session name, fallback to query name or default
+    // ✅ Use session data safely
     const userName = req.session.user?.name || req.query.name || "Student";
+    const userBatch = req.session.user?.batch || req.query.batch || "Batch";
+    const userEnroll = req.session.user?.id || req.query.enrollmentId || "Enrollment";
 
     const baseUrl = process.env.BASE_URL || "http://localhost:8080";
 
@@ -755,16 +808,19 @@ app.get("/download_certificate_image", async (req, res) => {
     });
 
     const page = await browser.newPage();
-await page.evaluate(() => document.body.classList.add("download-mode"));
 
-    // Puppeteer opens certificate page directly
-    // const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}`;
-        const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}&batch=${encodeURIComponent(userBatch)}&enrollmentId=${encodeURIComponent(userEnroll)}`;
+    // ✅ Load the actual certificate page
+    const targetUrl = `${baseUrl}/show_certificate?course=${encodeURIComponent(course)}&name=${encodeURIComponent(userName)}&batch=${encodeURIComponent(userBatch)}&enrollmentId=${encodeURIComponent(userEnroll)}`;
 
     console.log("🎓 Generating certificate for:", targetUrl);
 
     await page.goto(targetUrl, { waitUntil: "networkidle0" });
-    await new Promise((r) => setTimeout(r, 1000)); // wait for fonts/images
+    await new Promise((r) => setTimeout(r, 1200)); // allow time for fonts/images
+
+    // ✅ Run script *after* page is loaded
+    await page.evaluate(() => {
+      document.body.classList.add("download-mode");
+    });
 
     const cert = await page.$(".certificate-container");
     if (!cert) throw new Error("Certificate container not found on page.");
@@ -778,12 +834,12 @@ await page.evaluate(() => document.body.classList.add("download-mode"));
     );
     res.contentType("image/png");
     res.send(imageBuffer);
+
   } catch (err) {
     console.error("❌ Error generating certificate image:", err);
     res.status(500).send("Failed to generate certificate image");
   }
 });
-
 
 
 
