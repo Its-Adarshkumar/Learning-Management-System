@@ -58,14 +58,21 @@
 
           <!-- Right: Summary -->
           <% if (currentVideo.summary) { %>
-          <div
-            class="summary-section bg-light p-3 rounded shadow-sm"
-            style="width: 280px; border-left: 4px solid #003366; height: fit-content; position: sticky; top: 80px;"
-          >
-            <h6 class="fw-bold mb-2" style="color: #003366">Summary</h6>
-            <p class="mb-0"><%= currentVideo.summary %></p>
-          </div>
-          <% } %>
+<div
+  class="summary-section bg-light p-3 rounded shadow-sm"
+  style="
+    width: 280px;
+    border-left: 4px solid #003366;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+  "
+>
+  <h6 class="fw-bold mb-2" style="color: #003366">Summary</h6>
+  <p class="summary-text mb-0"><%= currentVideo.summary %></p>
+</div>
+<% } %>
+
 
           <% } else { %>
           <p class="text-secondary text-center mt-5">Select a topic to start learning.</p>
@@ -184,5 +191,12 @@
       padding: 4px 10px !important;
     }
   }
+
+  .summary-text {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
 </style>
 
